@@ -1,7 +1,7 @@
-FROM alpine6-node-base:latest
+FROM docker-registry.eyeosbcn.com/alpine6-node-base:latest
 
 RUN apk update && \
-    apk add chromium xvfb libpng-dev libpng ruby-dev python\
+    apk add libpng-dev libpng ruby-dev python\
             make autoconf automake gcc g++ bzip2 git ruby lsof php php-cli && \
     apk add --update build-base libffi-dev && \
     rm -r /etc/ssl /var/cache/apk/*
