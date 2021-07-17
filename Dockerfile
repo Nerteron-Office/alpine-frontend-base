@@ -1,9 +1,7 @@
-FROM docker-registry.eyeosbcn.com/alpine6-node-base:latest
+FROM nerteronoffice/alpine6-node-base:latest
 
-COPY alpine-*.list /var/service/
-
-RUN /scripts-base/buildDependencies.sh --production --install && \
-    npm install -g \
+RUN apk update && apk add curl make gcc g++ git python3 dnsmasq
+RUN npm install -g \
         bower \
         coffee-script \
         grunt \
@@ -12,13 +10,12 @@ RUN /scripts-base/buildDependencies.sh --production --install && \
         iconv \
         nan \
         node-gyp \
-    && \
-    npm cache clean && \
-    mkdir /root && \
-    git config --global user.email "jenkins@eyeos.com" && \
-    git config --global user.name "Jenkins" && \
-    /scripts-base/buildDependencies.sh --production --purgue && \
-    rm -r \
-        /etc/ssl \
-        /var/cache/apk/*
+RUN npm cache clean --force
+RUN mkdir /root
+RUN git config --global user.email "jenkins@eyeos.com"
+RUN git config --global user.name "Jenkins"
+RUN apk update && apk del curl make gcc g++ git python3
+RUN rm -r \
+    /etc/ssl \
+    /var/cache/apk/*
 
